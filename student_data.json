@@ -1,0 +1,150 @@
+{
+    "456789": {
+        "name": "Rahul",
+        "class": 2,
+        "quiz_history": [
+            {
+                "score": 5,
+                "total_questions": 10,
+                "timestamp": 1757263992.8946915,
+                "chapter_scores": {
+                    "addition": 33.33333333333333,
+                    "subtraction": 50.0,
+                    "multiplication": 0.0,
+                    "division": 75.0,
+                    "fractions": 100
+                },
+                "difficulty_scores": {
+                    "Easy": 100.0,
+                    "Medium": 25.0,
+                    "Hard": 33.33333333333333
+                }
+            },
+            {
+                "score": 6,
+                "total_questions": 10,
+                "timestamp": 1757264028.0859005,
+                "chapter_scores": {
+                    "addition": 50.0,
+                    "subtraction": 50.0,
+                    "multiplication": 66.66666666666666,
+                    "division": 50.0,
+                    "fractions": 100.0
+                },
+                "difficulty_scores": {
+                    "Easy": 100.0,
+                    "Medium": 0.0,
+                    "Hard": 50.0
+                }
+            },
+            {
+                "score": 0,
+                "total_questions": 10,
+                "timestamp": 1757264957.9032235,
+                "chapter_scores": {
+                    "addition": 0.0,
+                    "subtraction": 0.0,
+                    "multiplication": 0.0,
+                    "division": 0.0,
+                    "fractions": 0.0
+                },
+                "difficulty_scores": {
+                    "Easy": 0.0,
+                    "Medium": 0.0,
+                    "Hard": 0.0
+                }
+            },
+            {
+                "score": 3,
+                "total_questions": 10,
+                "timestamp": 1757265271.2202077,
+                "chapter_scores": {
+                    "addition": 0.0,
+                    "subtraction": 0.0,
+                    "multiplication": 0.0,
+                    "division": 100.0,
+                    "fractions": 50.0
+                },
+                "difficulty_scores": {
+                    "Easy": 50.0,
+                    "Medium": 100,
+                    "Hard": 25.0
+                }
+            },
+            {
+                "score": 1,
+                "total_questions": 10,
+                "timestamp": 1757265287.458,
+                "chapter_scores": {
+                    "addition": 0.0,
+                    "subtraction": 0.0,
+                    "multiplication": 0.0,
+                    "division": 0.0,
+                    "fractions": 50.0
+                },
+                "difficulty_scores": {
+                    "Easy": 25.0,
+                    "Medium": 0.0,
+                    "Hard": 0.0
+                }
+            },
+            {
+                "score": 4,
+                "total_questions": 10,
+                "timestamp": 1757265506.2718081,
+                "chapter_scores": {
+                    "addition": 0.0,
+                    "subtraction": 0.0,
+                    "multiplication": 66.66666666666666,
+                    "division": 100.0,
+                    "fractions": 50.0
+                },
+                "difficulty_scores": {
+                    "Easy": 28.57142857142857,
+                    "Medium": 50.0,
+                    "Hard": 100.0
+                }
+            }
+        ]
+    },
+    "123456": {
+        "name": "Rahul",
+        "class": 3,
+        "quiz_history": [
+            {
+                "score": 3,
+                "total_questions": 10,
+                "timestamp": 1757265084.0802171,
+                "chapter_scores": {
+                    "addition": 16.666666666666664,
+                    "subtraction": 100,
+                    "multiplication": 0.0,
+                    "division": 0.0,
+                    "fractions": 100.0
+                },
+                "difficulty_scores": {
+                    "Easy": 33.33333333333333,
+                    "Medium": 50.0,
+                    "Hard": 0.0
+                }
+            },
+            {
+                "score": 1,
+                "total_questions": 10,
+                "timestamp": 1757265093.0739028,
+                "chapter_scores": {
+                    "addition": 0.0,
+                    "subtraction": 0.0,
+                    "multiplication": 0.0,
+                    "division": 0.0,
+                    "fractions": 100.0
+                },
+                "difficulty_scores": {
+                    "Easy": 0.0,
+                    "Medium": 0.0,
+                    "Hard": 20.0
+                }
+            }
+        ]
+    }
+}
