@@ -1,443 +1,363 @@
-{
-  "nbformat": 4,
-  "nbformat_minor": 0,
-  "metadata": {
-    "colab": {
-      "provenance": [],
-      "authorship_tag": "ABX9TyO4TPxx2EimfY93IQwPIOWu",
-      "include_colab_link": true
-    },
-    "kernelspec": {
-      "name": "python3",
-      "display_name": "Python 3"
-    },
-    "language_info": {
-      "name": "python"
-    }
-  },
-  "cells": [
-    {
-      "cell_type": "markdown",
-      "metadata": {
-        "id": "view-in-github",
-        "colab_type": "text"
-      },
-      "source": [
-        "<a href=\"https://colab.research.google.com/github/11rohitanand/AI_in_personilized_learning_math/blob/main/math_recommender_advanced_py\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
-      ]
-    },
-    {
-      "cell_type": "markdown",
-      "source": [
-        "**Question Bank:**First, we need to make sure your question_bank has enough questions. We'll aim for 5 questions per chapter to easily reach 20 questions in total (4 chapters * 5 questions/chapter = 20 questions)."
-      ],
-      "metadata": {
-        "id": "_pMd7bekmd1I"
-      }
-    },
-    {
-      "cell_type": "code",
-      "source": [
-        "pip install streamlit pandas numpy"
-      ],
-      "metadata": {
-        "colab": {
-          "base_uri": "https://localhost:8080/"
-        },
-        "id": "dKCdVOJNmeag",
-        "outputId": "6e365679-812d-4d1a-f357-d908ac44c8a6"
-      },
-      "execution_count": 5,
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": [
-            "Requirement already satisfied: streamlit in /usr/local/lib/python3.12/dist-packages (1.49.1)\n",
-            "Requirement already satisfied: pandas in /usr/local/lib/python3.12/dist-packages (2.2.2)\n",
-            "Requirement already satisfied: numpy in /usr/local/lib/python3.12/dist-packages (2.0.2)\n",
-            "Requirement already satisfied: altair!=5.4.0,!=5.4.1,<6,>=4.0 in /usr/local/lib/python3.12/dist-packages (from streamlit) (5.5.0)\n",
-            "Requirement already satisfied: blinker<2,>=1.5.0 in /usr/local/lib/python3.12/dist-packages (from streamlit) (1.9.0)\n",
-            "Requirement already satisfied: cachetools<7,>=4.0 in /usr/local/lib/python3.12/dist-packages (from streamlit) (5.5.2)\n",
-            "Requirement already satisfied: click<9,>=7.0 in /usr/local/lib/python3.12/dist-packages (from streamlit) (8.2.1)\n",
-            "Requirement already satisfied: packaging<26,>=20 in /usr/local/lib/python3.12/dist-packages (from streamlit) (25.0)\n",
-            "Requirement already satisfied: pillow<12,>=7.1.0 in /usr/local/lib/python3.12/dist-packages (from streamlit) (11.3.0)\n",
-            "Requirement already satisfied: protobuf<7,>=3.20 in /usr/local/lib/python3.12/dist-packages (from streamlit) (5.29.5)\n",
-            "Requirement already satisfied: pyarrow>=7.0 in /usr/local/lib/python3.12/dist-packages (from streamlit) (18.1.0)\n",
-            "Requirement already satisfied: requests<3,>=2.27 in /usr/local/lib/python3.12/dist-packages (from streamlit) (2.32.4)\n",
-            "Requirement already satisfied: tenacity<10,>=8.1.0 in /usr/local/lib/python3.12/dist-packages (from streamlit) (8.5.0)\n",
-            "Requirement already satisfied: toml<2,>=0.10.1 in /usr/local/lib/python3.12/dist-packages (from streamlit) (0.10.2)\n",
-            "Requirement already satisfied: typing-extensions<5,>=4.4.0 in /usr/local/lib/python3.12/dist-packages (from streamlit) (4.15.0)\n",
-            "Requirement already satisfied: watchdog<7,>=2.1.5 in /usr/local/lib/python3.12/dist-packages (from streamlit) (6.0.0)\n",
-            "Requirement already satisfied: gitpython!=3.1.19,<4,>=3.0.7 in /usr/local/lib/python3.12/dist-packages (from streamlit) (3.1.45)\n",
-            "Requirement already satisfied: pydeck<1,>=0.8.0b4 in /usr/local/lib/python3.12/dist-packages (from streamlit) (0.9.1)\n",
-            "Requirement already satisfied: tornado!=6.5.0,<7,>=6.0.3 in /usr/local/lib/python3.12/dist-packages (from streamlit) (6.4.2)\n",
-            "Requirement already satisfied: python-dateutil>=2.8.2 in /usr/local/lib/python3.12/dist-packages (from pandas) (2.9.0.post0)\n",
-            "Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.12/dist-packages (from pandas) (2025.2)\n",
-            "Requirement already satisfied: tzdata>=2022.7 in /usr/local/lib/python3.12/dist-packages (from pandas) (2025.2)\n",
-            "Requirement already satisfied: jinja2 in /usr/local/lib/python3.12/dist-packages (from altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (3.1.6)\n",
-            "Requirement already satisfied: jsonschema>=3.0 in /usr/local/lib/python3.12/dist-packages (from altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (4.25.1)\n",
-            "Requirement already satisfied: narwhals>=1.14.2 in /usr/local/lib/python3.12/dist-packages (from altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (2.3.0)\n",
-            "Requirement already satisfied: gitdb<5,>=4.0.1 in /usr/local/lib/python3.12/dist-packages (from gitpython!=3.1.19,<4,>=3.0.7->streamlit) (4.0.12)\n",
-            "Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.12/dist-packages (from python-dateutil>=2.8.2->pandas) (1.17.0)\n",
-            "Requirement already satisfied: charset_normalizer<4,>=2 in /usr/local/lib/python3.12/dist-packages (from requests<3,>=2.27->streamlit) (3.4.3)\n",
-            "Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.12/dist-packages (from requests<3,>=2.27->streamlit) (3.10)\n",
-            "Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.12/dist-packages (from requests<3,>=2.27->streamlit) (2.5.0)\n",
-            "Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.12/dist-packages (from requests<3,>=2.27->streamlit) (2025.8.3)\n",
-            "Requirement already satisfied: smmap<6,>=3.0.1 in /usr/local/lib/python3.12/dist-packages (from gitdb<5,>=4.0.1->gitpython!=3.1.19,<4,>=3.0.7->streamlit) (5.0.2)\n",
-            "Requirement already satisfied: MarkupSafe>=2.0 in /usr/local/lib/python3.12/dist-packages (from jinja2->altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (3.0.2)\n",
-            "Requirement already satisfied: attrs>=22.2.0 in /usr/local/lib/python3.12/dist-packages (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (25.3.0)\n",
-            "Requirement already satisfied: jsonschema-specifications>=2023.03.6 in /usr/local/lib/python3.12/dist-packages (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (2025.4.1)\n",
-            "Requirement already satisfied: referencing>=0.28.4 in /usr/local/lib/python3.12/dist-packages (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (0.36.2)\n",
-            "Requirement already satisfied: rpds-py>=0.7.1 in /usr/local/lib/python3.12/dist-packages (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (0.27.1)\n"
-          ]
-        }
-      ]
-    },
-    {
-      "cell_type": "code",
-      "metadata": {
-        "colab": {
-          "base_uri": "https://localhost:8080/"
-        },
-        "id": "54e5f392",
-        "outputId": "e95c927a-0e8b-4d54-dd5a-a4fbdc86bba1"
-      },
-      "source": [
-        "%pip install streamlit"
-      ],
-      "execution_count": 3,
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": [
-            "Collecting streamlit\n",
-            "  Downloading streamlit-1.49.1-py3-none-any.whl.metadata (9.5 kB)\n",
-            "Requirement already satisfied: altair!=5.4.0,!=5.4.1,<6,>=4.0 in /usr/local/lib/python3.12/dist-packages (from streamlit) (5.5.0)\n",
-            "Requirement already satisfied: blinker<2,>=1.5.0 in /usr/local/lib/python3.12/dist-packages (from streamlit) (1.9.0)\n",
-            "Requirement already satisfied: cachetools<7,>=4.0 in /usr/local/lib/python3.12/dist-packages (from streamlit) (5.5.2)\n",
-            "Requirement already satisfied: click<9,>=7.0 in /usr/local/lib/python3.12/dist-packages (from streamlit) (8.2.1)\n",
-            "Requirement already satisfied: numpy<3,>=1.23 in /usr/local/lib/python3.12/dist-packages (from streamlit) (2.0.2)\n",
-            "Requirement already satisfied: packaging<26,>=20 in /usr/local/lib/python3.12/dist-packages (from streamlit) (25.0)\n",
-            "Requirement already satisfied: pandas<3,>=1.4.0 in /usr/local/lib/python3.12/dist-packages (from streamlit) (2.2.2)\n",
-            "Requirement already satisfied: pillow<12,>=7.1.0 in /usr/local/lib/python3.12/dist-packages (from streamlit) (11.3.0)\n",
-            "Requirement already satisfied: protobuf<7,>=3.20 in /usr/local/lib/python3.12/dist-packages (from streamlit) (5.29.5)\n",
-            "Requirement already satisfied: pyarrow>=7.0 in /usr/local/lib/python3.12/dist-packages (from streamlit) (18.1.0)\n",
-            "Requirement already satisfied: requests<3,>=2.27 in /usr/local/lib/python3.12/dist-packages (from streamlit) (2.32.4)\n",
-            "Requirement already satisfied: tenacity<10,>=8.1.0 in /usr/local/lib/python3.12/dist-packages (from streamlit) (8.5.0)\n",
-            "Requirement already satisfied: toml<2,>=0.10.1 in /usr/local/lib/python3.12/dist-packages (from streamlit) (0.10.2)\n",
-            "Requirement already satisfied: typing-extensions<5,>=4.4.0 in /usr/local/lib/python3.12/dist-packages (from streamlit) (4.15.0)\n",
-            "Requirement already satisfied: watchdog<7,>=2.1.5 in /usr/local/lib/python3.12/dist-packages (from streamlit) (6.0.0)\n",
-            "Requirement already satisfied: gitpython!=3.1.19,<4,>=3.0.7 in /usr/local/lib/python3.12/dist-packages (from streamlit) (3.1.45)\n",
-            "Collecting pydeck<1,>=0.8.0b4 (from streamlit)\n",
-            "  Downloading pydeck-0.9.1-py2.py3-none-any.whl.metadata (4.1 kB)\n",
-            "Requirement already satisfied: tornado!=6.5.0,<7,>=6.0.3 in /usr/local/lib/python3.12/dist-packages (from streamlit) (6.4.2)\n",
-            "Requirement already satisfied: jinja2 in /usr/local/lib/python3.12/dist-packages (from altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (3.1.6)\n",
-            "Requirement already satisfied: jsonschema>=3.0 in /usr/local/lib/python3.12/dist-packages (from altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (4.25.1)\n",
-            "Requirement already satisfied: narwhals>=1.14.2 in /usr/local/lib/python3.12/dist-packages (from altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (2.3.0)\n",
-            "Requirement already satisfied: gitdb<5,>=4.0.1 in /usr/local/lib/python3.12/dist-packages (from gitpython!=3.1.19,<4,>=3.0.7->streamlit) (4.0.12)\n",
-            "Requirement already satisfied: python-dateutil>=2.8.2 in /usr/local/lib/python3.12/dist-packages (from pandas<3,>=1.4.0->streamlit) (2.9.0.post0)\n",
-            "Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.12/dist-packages (from pandas<3,>=1.4.0->streamlit) (2025.2)\n",
-            "Requirement already satisfied: tzdata>=2022.7 in /usr/local/lib/python3.12/dist-packages (from pandas<3,>=1.4.0->streamlit) (2025.2)\n",
-            "Requirement already satisfied: charset_normalizer<4,>=2 in /usr/local/lib/python3.12/dist-packages (from requests<3,>=2.27->streamlit) (3.4.3)\n",
-            "Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.12/dist-packages (from requests<3,>=2.27->streamlit) (3.10)\n",
-            "Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.12/dist-packages (from requests<3,>=2.27->streamlit) (2.5.0)\n",
-            "Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.12/dist-packages (from requests<3,>=2.27->streamlit) (2025.8.3)\n",
-            "Requirement already satisfied: smmap<6,>=3.0.1 in /usr/local/lib/python3.12/dist-packages (from gitdb<5,>=4.0.1->gitpython!=3.1.19,<4,>=3.0.7->streamlit) (5.0.2)\n",
-            "Requirement already satisfied: MarkupSafe>=2.0 in /usr/local/lib/python3.12/dist-packages (from jinja2->altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (3.0.2)\n",
-            "Requirement already satisfied: attrs>=22.2.0 in /usr/local/lib/python3.12/dist-packages (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (25.3.0)\n",
-            "Requirement already satisfied: jsonschema-specifications>=2023.03.6 in /usr/local/lib/python3.12/dist-packages (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (2025.4.1)\n",
-            "Requirement already satisfied: referencing>=0.28.4 in /usr/local/lib/python3.12/dist-packages (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (0.36.2)\n",
-            "Requirement already satisfied: rpds-py>=0.7.1 in /usr/local/lib/python3.12/dist-packages (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<6,>=4.0->streamlit) (0.27.1)\n",
-            "Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.12/dist-packages (from python-dateutil>=2.8.2->pandas<3,>=1.4.0->streamlit) (1.17.0)\n",
-            "Downloading streamlit-1.49.1-py3-none-any.whl (10.0 MB)\n",
-            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m10.0/10.0 MB\u001b[0m \u001b[31m45.5 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
-            "\u001b[?25hDownloading pydeck-0.9.1-py2.py3-none-any.whl (6.9 MB)\n",
-            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m6.9/6.9 MB\u001b[0m \u001b[31m77.2 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
-            "\u001b[?25hInstalling collected packages: pydeck, streamlit\n",
-            "Successfully installed pydeck-0.9.1 streamlit-1.49.1\n"
-          ]
-        }
-      ]
-    },
-    {
-      "cell_type": "markdown",
-      "metadata": {
-        "id": "f907edb2"
-      },
-      "source": [
-        "Now that `streamlit` is installed, you can run the previous cell again without the `ModuleNotFoundError`."
-      ]
-    },
-    {
-      "cell_type": "code",
-      "source": [
-        "import streamlit as st\n",
-        "import random # We'll need this for random selection\n",
-        "\n",
-        "#step1\n",
-        "\n",
-        "# Your expanded question_bank dictionary\n",
-        "question_bank = {\n",
-        "    \"addition\": [\n",
-        "        {\"question\": \"What is 5 + 3?\", \"options\": [\"7\", \"8\", \"9\", \"10\"], \"correct_answer\": \"8\"},\n",
-        "        {\"question\": \"Add: 12 + 7?\", \"options\": [\"18\", \"19\", \"20\", \"21\"], \"correct_answer\": \"19\"},\n",
-        "        {\"question\": \"What is 20 + 15?\", \"options\": [\"30\", \"35\", \"40\", \"25\"], \"correct_answer\": \"35\"},\n",
-        "        {\"question\": \"If you have 10 apples and get 8 more, how many do you have?\", \"options\": [\"16\", \"17\", \"18\", \"19\"], \"correct_answer\": \"18\"},\n",
-        "        {\"question\": \"Calculate: 45 + 23?\", \"options\": [\"67\", \"68\", \"70\", \"72\"], \"correct_answer\": \"68\"},\n",
-        "    ],\n",
-        "    \"subtraction\": [\n",
-        "        {\"question\": \"What is 10 - 4?\", \"options\": [\"5\", \"6\", \"7\", \"8\"], \"correct_answer\": \"6\"},\n",
-        "        {\"question\": \"Subtract: 25 - 10?\", \"options\": [\"10\", \"15\", \"20\", \"25\"], \"correct_answer\": \"15\"},\n",
-        "        {\"question\": \"What is 50 - 20?\", \"options\": [\"20\", \"25\", \"30\", \"35\"], \"correct_answer\": \"30\"},\n",
-        "        {\"question\": \"If you have 15 cookies and eat 6, how many are left?\", \"options\": [\"7\", \"8\", \"9\", \"10\"], \"correct_answer\": \"9\"},\n",
-        "        {\"question\": \"Calculate: 70 - 35?\", \"options\": [\"30\", \"35\", \"40\", \"45\"], \"correct_answer\": \"35\"},\n",
-        "    ],\n",
-        "    \"multiplication\": [\n",
-        "        {\"question\": \"What is 4 x 5?\", \"options\": [\"10\", \"15\", \"20\", \"25\"], \"correct_answer\": \"20\"},\n",
-        "        {\"question\": \"Multiply: 7 x 8?\", \"options\": [\"49\", \"56\", \"63\", \"70\"], \"correct_answer\": \"56\"},\n",
-        "        {\"question\": \"What is 10 x 3?\", \"options\": [\"20\", \"25\", \"30\", \"35\"], \"correct_answer\": \"30\"},\n",
-        "        {\"question\": \"If there are 3 groups of 6 students, how many students are there?\", \"options\": [\"12\", \"15\", \"18\", \"21\"], \"correct_answer\": \"18\"},\n",
-        "        {\"question\": \"Calculate: 11 x 4?\", \"options\": [\"33\", \"44\", \"55\", \"66\"], \"correct_answer\": \"44\"},\n",
-        "    ],\n",
-        "    \"division\": [\n",
-        "        {\"question\": \"What is 12 / 3?\", \"options\": [\"2\", \"3\", \"4\", \"6\"], \"correct_answer\": \"4\"},\n",
-        "        {\"question\": \"Divide: 40 / 5?\", \"options\": [\"6\", \"7\", \"8\", \"9\"], \"correct_answer\": \"8\"},\n",
-        "        {\"question\": \"What is 100 / 10?\", \"options\": [\"5\", \"8\", \"10\", \"12\"], \"correct_answer\": \"10\"},\n",
-        "        {\"question\": \"Share 24 candies equally among 4 friends. How many does each get?\", \"options\": [\"4\", \"5\", \"6\", \"8\"], \"correct_answer\": \"6\"},\n",
-        "        {\"question\": \"Calculate: 63 / 9?\", \"options\": [\"6\", \"7\", \"8\", \"9\"], \"correct_answer\": \"7\"},\n",
-        "    ]\n",
-        "}\n",
-        "\n",
-        "# --- This is where we'll continue our Streamlit app ---\n",
-        "st.title(\"Personalized Math Test\")\n",
-        "st.write(\"Please answer the 6 random questions below.\")\n",
-        "\n",
-        "#step2\n",
-        "\n",
-        "st.title(\"Personalized Math Test\")\n",
-        "st.write(\"Please answer the 6 random questions below.\")\n",
-        "\n",
-        "# --- Select 6 random questions ---\n",
-        "# 1. Create a flat list of all questions with their chapter info\n",
-        "all_questions_flat = []\n",
-        "for chapter, questions in question_bank.items():\n",
-        "    for q in questions:\n",
-        "        all_questions_flat.append({\"chapter\": chapter, **q}) # Add chapter info to each question\n",
-        "\n",
-        "# 2. Use st.session_state to store the selected random questions\n",
-        "#    This ensures the same 6 questions are shown throughout a user's session\n",
-        "if 'selected_questions' not in st.session_state:\n",
-        "    st.session_state.selected_questions = random.sample(all_questions_flat, 6) # Select 6 unique random questions\n",
-        "\n",
-        "selected_questions = st.session_state.selected_questions\n",
-        "\n",
-        "# Initialize a dictionary to store student's answers for these 6 questions\n",
-        "# We'll store the actual selected option for each question presented\n",
-        "if 'student_answers_current_test' not in st.session_state:\n",
-        "    st.session_state.student_answers_current_test = [\"\"] * len(selected_questions)\n",
-        "\n",
-        "# Display the 6 selected questions\n",
-        "st.subheader(\"Random Math Questions\")\n",
-        "for i, q_data in enumerate(selected_questions):\n",
-        "    st.write(f\"**Question {i+1} ({q_data['chapter'].title()}):** {q_data['question']}\")\n",
-        "\n",
-        "    # Use st.radio for MCQ options\n",
-        "    # The 'key' must be unique for each radio button\n",
-        "    # The 'index' helps restore the selected value after a rerun\n",
-        "    st.session_state.student_answers_current_test[i] = st.radio(\n",
-        "        f\"Select your answer for Q{i+1}:\",\n",
-        "        q_data['options'],\n",
-        "        key=f\"random_q_{i}\",\n",
-        "        index=q_data['options'].index(st.session_state.student_answers_current_test[i])\n",
-        "              if st.session_state.student_answers_current_test[i] in q_data['options'] else 0\n",
-        "    )\n",
-        "\n",
-        "#step3\n",
-        "\n",
-        "if st.button(\"Submit Test\"):\n",
-        "    st.write(\"Test submitted! Analyzing your results...\")\n",
-        "\n",
-        "    # --- Updated Scoring Logic ---\n",
-        "    chapter_scores = {}\n",
-        "    chapter_question_counts = {ch: 0 for ch in question_bank.keys()} # How many questions for each chapter were displayed\n",
-        "    chapter_correct_counts = {ch: 0 for ch in question_bank.keys()} # How many correct answers for each chapter\n",
-        "\n",
-        "    # Iterate through the 6 selected questions and student's answers\n",
-        "    for i, q_data in enumerate(selected_questions):\n",
-        "        chapter = q_data['chapter']\n",
-        "        student_answer = st.session_state.student_answers_current_test[i]\n",
-        "        correct_answer = q_data['correct_answer']\n",
-        "\n",
-        "        chapter_question_counts[chapter] += 1 # Count that this chapter had a question displayed\n",
-        "        if student_answer == correct_answer:\n",
-        "            chapter_correct_counts[chapter] += 1 # Count correct for this chapter\n",
-        "\n",
-        "    # Calculate percentage score for each chapter based on displayed questions\n",
-        "    for chapter in question_bank.keys():\n",
-        "        total_q_displayed_for_chapter = chapter_question_counts[chapter]\n",
-        "        correct_q_for_chapter = chapter_correct_counts[chapter]\n",
-        "\n",
-        "        if total_q_displayed_for_chapter > 0:\n",
-        "            score_percentage = (correct_q_for_chapter / total_q_displayed_for_chapter) * 100\n",
-        "        else:\n",
-        "            # If no questions from this chapter were displayed, we consider it \"Not Assessed\"\n",
-        "            # For recommendation purposes, we'll assign a perfect score to avoid false recommendations.\n",
-        "            score_percentage = 100\n",
-        "            # You could also store a flag like \"Not Assessed\" to display to the user\n",
-        "\n",
-        "        chapter_scores[chapter] = score_percentage\n",
-        "\n",
-        "    st.subheader(\"Your Scores on the Presented Questions:\")\n",
-        "    for chapter, score in chapter_scores.items():\n",
-        "        # Display \"Not Assessed\" if no questions from that chapter were shown and score is 100\n",
-        "        if chapter_question_counts[chapter] == 0:\n",
-        "             st.write(f\"- {chapter.replace('_', ' ').title()}: **Not Assessed** (No questions from this topic were in your test)\")\n",
-        "        else:\n",
-        "             st.write(f\"- {chapter.replace('_', ' ').title()}: **{score:.2f}%** ({chapter_question_counts[chapter]} question(s) asked)\")\n",
-        "\n",
-        "    # --- Recommendation Logic (AI Engine) ---\n",
-        "    recommended_chapters = []\n",
-        "    # Define your threshold for needing focus\n",
-        "    FOCUSED_SCORE_THRESHOLD = 70 # Students scoring below 70% need to focus on this chapter\n",
-        "\n",
-        "    for chapter, score in chapter_scores.items():\n",
-        "        # Only recommend if the score is below threshold AND the chapter was actually assessed\n",
-        "        if score < FOCUSED_SCORE_THRESHOLD and chapter_question_counts[chapter] > 0:\n",
-        "            recommended_chapters.append(chapter.replace('_', ' ').title())\n",
-        "\n",
-        "    # --- Display Recommendations (Content Selector) ---\n",
-        "    st.subheader(\"Based on your performance, we recommend you focus on these chapters:\")\n",
-        "    if recommended_chapters:\n",
-        "        for rec_chapter in recommended_chapters:\n",
-        "            st.write(f\"- **{rec_chapter}**\")\n",
-        "        st.info(\"Focusing on these areas will help you strengthen your math skills!\")\n",
-        "    else:\n",
-        "        st.balloons() # Celebrate!\n",
-        "        st.success(\"Great job! You've performed well in all the assessed chapters. Keep up the excellent work!\")\n",
-        "\n",
-        "    st.success(\"Analysis complete! See your recommendations above.\")\n",
-        "\n"
-      ],
-      "metadata": {
-        "colab": {
-          "base_uri": "https://localhost:8080/"
-        },
-        "id": "S0BX_BpjqFV6",
-        "outputId": "7e02d784-0a4a-4147-b10e-b00b8cf21727"
-      },
-      "execution_count": 7,
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stderr",
-          "text": [
-            "2025-09-07 15:01:21.461 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.462 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.463 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.466 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.469 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.472 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.477 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.478 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.481 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.483 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.485 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.491 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.494 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.496 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.498 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.500 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.501 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.503 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.504 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.505 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.506 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.506 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.507 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.507 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.508 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.509 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.509 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.510 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.510 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.511 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.512 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.513 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.513 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.514 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.515 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.515 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.516 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.517 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.517 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.518 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.519 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.519 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.520 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.520 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.521 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.521 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.522 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.522 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.523 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.524 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.524 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.525 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.525 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.526 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.527 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.528 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.528 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.529 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.530 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.531 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.531 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.532 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.532 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.533 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.533 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.534 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.535 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.535 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.536 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.536 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.537 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.537 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.538 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.539 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.539 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.540 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.540 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.541 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.541 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.542 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.542 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.543 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.544 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.545 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.545 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.546 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.546 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.547 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.548 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.548 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.549 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.549 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.550 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.550 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.551 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.552 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.553 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.554 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.554 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.555 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.555 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-            "2025-09-07 15:01:21.556 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n"
-          ]
-        }
-      ]
-    }
-  ]
+import streamlit as st
+import random
+import json
+import os
+import time
+
+# Expanded question_bank with 50 questions and difficulty levels
+question_bank = {
+    "addition": [
+        {"question": "What is 5 + 3?", "options": ["7", "8", "9", "10"], "correct_answer": "8", "difficulty": "Easy"},
+        {"question": "What is 12 + 7?", "options": ["18", "19", "20", "21"], "correct_answer": "19", "difficulty": "Easy"},
+        {"question": "What is 20 + 15?", "options": ["30", "35", "40", "25"], "correct_answer": "35", "difficulty": "Easy"},
+        {"question": "What is 45 + 23?", "options": ["67", "68", "70", "72"], "correct_answer": "68", "difficulty": "Medium"},
+        {"question": "If you have 10 apples and get 8 more, how many do you have?", "options": ["16", "17", "18", "19"], "correct_answer": "18", "difficulty": "Easy"},
+        {"question": "A baker sells 12 loaves in the morning and 15 in the afternoon. How many loaves did he sell?", "options": ["25", "27", "30", "32"], "correct_answer": "27", "difficulty": "Medium"},
+        {"question": "Calculate: 153 + 248?", "options": ["400", "401", "402", "403"], "correct_answer": "401", "difficulty": "Hard"},
+        {"question": "If a number is added to 50, the result is 115. What is the number?", "options": ["60", "65", "70", "75"], "correct_answer": "65", "difficulty": "Hard"},
+        {"question": "What is the sum of 100, 200, and 300?", "options": ["500", "600", "700", "800"], "correct_answer": "600", "difficulty": "Medium"},
+        {"question": "Calculate: 99 + 99?", "options": ["198", "199", "200", "201"], "correct_answer": "198", "difficulty": "Medium"},
+    ],
+    "subtraction": [
+        {"question": "What is 10 - 4?", "options": ["5", "6", "7", "8"], "correct_answer": "6", "difficulty": "Easy"},
+        {"question": "What is 25 - 10?", "options": ["10", "15", "20", "25"], "correct_answer": "15", "difficulty": "Easy"},
+        {"question": "What is 50 - 20?", "options": ["20", "25", "30", "35"], "correct_answer": "30", "difficulty": "Easy"},
+        {"question": "If you have 15 cookies and eat 6, how many are left?", "options": ["7", "8", "9", "10"], "correct_answer": "9", "difficulty": "Easy"},
+        {"question": "Calculate: 70 - 35?", "options": ["30", "35", "40", "45"], "correct_answer": "35", "difficulty": "Medium"},
+        {"question": "A bus starts with 40 people. At the first stop, 10 get off. How many are left?", "options": ["25", "30", "35", "40"], "correct_answer": "30", "difficulty": "Medium"},
+        {"question": "Calculate: 1000 - 450?", "options": ["550", "650", "500", "450"], "correct_answer": "550", "difficulty": "Hard"},
+        {"question": "What is 200 - 125?", "options": ["75", "80", "85", "90"], "correct_answer": "75", "difficulty": "Medium"},
+        {"question": "The difference between two numbers is 25. If the larger number is 80, what is the smaller?", "options": ["50", "55", "60", "65"], "correct_answer": "55", "difficulty": "Hard"},
+        {"question": "A library has 500 books. After lending some, it has 325 left. How many were lent?", "options": ["150", "175", "200", "225"], "correct_answer": "175", "difficulty": "Hard"},
+    ],
+    "multiplication": [
+        {"question": "What is 4 x 5?", "options": ["10", "15", "20", "25"], "correct_answer": "20", "difficulty": "Easy"},
+        {"question": "What is 7 x 8?", "options": ["49", "56", "63", "70"], "correct_answer": "56", "difficulty": "Medium"},
+        {"question": "What is 10 x 3?", "options": ["20", "25", "30", "35"], "correct_answer": "30", "difficulty": "Easy"},
+        {"question": "If there are 3 groups of 6 students, how many students are there?", "options": ["12", "15", "18", "21"], "correct_answer": "18", "difficulty": "Medium"},
+        {"question": "Calculate: 11 x 4?", "options": ["33", "44", "55", "66"], "correct_answer": "44", "difficulty": "Easy"},
+        {"question": "What is 12 x 12?", "options": ["132", "144", "156", "169"], "correct_answer": "144", "difficulty": "Medium"},
+        {"question": "A box has 8 bags of marbles, and each bag has 15 marbles. How many marbles are there in total?", "options": ["100", "110", "120", "130"], "correct_answer": "120", "difficulty": "Hard"},
+        {"question": "What is 25 x 5?", "options": ["125", "150", "175", "200"], "correct_answer": "125", "difficulty": "Medium"},
+        {"question": "What is 15 x 15?", "options": ["200", "225", "250", "275"], "correct_answer": "225", "difficulty": "Hard"},
+        {"question": "A car travels at 60 km/h. How far will it travel in 3 hours?", "options": ["150", "180", "200", "210"], "correct_answer": "180", "difficulty": "Hard"},
+    ],
+    "division": [
+        {"question": "What is 12 / 3?", "options": ["2", "3", "4", "6"], "correct_answer": "4", "difficulty": "Easy"},
+        {"question": "Divide: 40 / 5?", "options": ["6", "7", "8", "9"], "correct_answer": "8", "difficulty": "Medium"},
+        {"question": "What is 100 / 10?", "options": ["5", "8", "10", "12"], "correct_answer": "10", "difficulty": "Easy"},
+        {"question": "Share 24 candies equally among 4 friends. How many does each get?", "options": ["4", "5", "6", "8"], "correct_answer": "6", "difficulty": "Easy"},
+        {"question": "Calculate: 63 / 9?", "options": ["6", "7", "8", "9"], "correct_answer": "7", "difficulty": "Medium"},
+        {"question": "A farmer has 72 eggs to pack into cartons that hold 6 eggs each. How many cartons does he need?", "options": ["10", "11", "12", "13"], "correct_answer": "12", "difficulty": "Hard"},
+        {"question": "What is 120 / 12?", "options": ["8", "10", "11", "12"], "correct_answer": "10", "difficulty": "Medium"},
+        {"question": "If you have 99 books and pack them into boxes of 9, how many boxes do you need?", "options": ["9", "10", "11", "12"], "correct_answer": "11", "difficulty": "Hard"},
+        {"question": "What is 200 / 25?", "options": ["6", "7", "8", "9"], "correct_answer": "8", "difficulty": "Hard"},
+        {"question": "Divide 55 by 5?", "options": ["10", "11", "12", "13"], "correct_answer": "11", "difficulty": "Easy"},
+    ],
+    "fractions": [
+        {"question": "What is 1/2 + 1/2?", "options": ["1", "1/2", "2", "1/4"], "correct_answer": "1", "difficulty": "Easy"},
+        {"question": "What is 1/4 + 1/4?", "options": ["1/2", "1/4", "2/4", "1"], "correct_answer": "1/2", "difficulty": "Easy"},
+        {"question": "If a pizza is cut into 8 slices, and you eat 3, what fraction is left?", "options": ["5/8", "3/8", "1/2", "5/5"], "correct_answer": "5/8", "difficulty": "Medium"},
+        {"question": "What is 1/3 of 9?", "options": ["2", "3", "4", "5"], "correct_answer": "3", "difficulty": "Medium"},
+        {"question": "Simplify 4/8?", "options": ["1/2", "1/4", "2/8", "4/4"], "correct_answer": "1/2", "difficulty": "Easy"},
+        {"question": "What is 1/2 + 1/4?", "options": ["3/4", "1/2", "2/4", "1/3"], "correct_answer": "3/4", "difficulty": "Hard"},
+        {"question": "Simplify 10/15?", "options": ["1/2", "2/3", "3/4", "5/5"], "correct_answer": "2/3", "difficulty": "Medium"},
+        {"question": "What is 2/5 x 3/4?", "options": ["6/20", "5/9", "3/10", "1/2"], "correct_answer": "3/10", "difficulty": "Hard"},
+        {"question": "Convert 0.5 to a fraction?", "options": ["1/2", "1/4", "2/5", "5/100"], "correct_answer": "1/2", "difficulty": "Easy"},
+        {"question": "What is 3/4 - 1/2?", "options": ["1/4", "2/4", "1/2", "3/2"], "correct_answer": "1/4", "difficulty": "Hard"},
+    ]
 }
+
+# --- State Management ---
+if "user_info_submitted" not in st.session_state:
+    st.session_state.user_info_submitted = False
+if "student_code" not in st.session_state:
+    st.session_state.student_code = ""
+if "quiz_submitted" not in st.session_state:
+    st.session_state.quiz_submitted = False
+if 'selected_questions' not in st.session_state:
+    st.session_state.selected_questions = None
+if 'student_answers_current_test' not in st.session_state:
+    st.session_state.student_answers_current_test = []
+if 'last_score' not in st.session_state:
+    st.session_state.last_score = None
+if 'last_submission_time' not in st.session_state:
+    st.session_state.last_submission_time = None
+if 'total_correct' not in st.session_state:
+    st.session_state.total_correct = None
+if 'chapter_scores_data' not in st.session_state:
+    st.session_state.chapter_scores_data = {}
+if 'overall_score_percentage' not in st.session_state:
+    st.session_state.overall_score_percentage = 0.0
+
+# --- Local File Storage for Student Data ---
+DATA_FILE_PATH = r"C:\Minor in AI- IIT Ropar\project\database\student_data.json"
+DATA_DIR = os.path.dirname(DATA_FILE_PATH)
+
+def load_data():
+    """Loads student data from a local JSON file."""
+    if os.path.exists(DATA_FILE_PATH) and os.path.getsize(DATA_FILE_PATH) > 0:
+        with open(DATA_FILE_PATH, "r") as f:
+            return json.load(f)
+    return {}
+
+def save_data(data):
+    """Saves student data to a local JSON file."""
+    if not os.path.exists(DATA_DIR):
+        os.makedirs(DATA_DIR)
+    
+    with open(DATA_FILE_PATH, "w") as f:
+        json.dump(data, f, indent=4)
+
+def submit_user_info(name, student_code, student_class):
+    """Saves user info to session state and local file."""
+    if not name or not student_code or student_class is None:
+        st.error("Please fill in all fields.")
+        return False
+    
+    if len(student_code) != 6 or not student_code.isdigit():
+        st.error("Student Code must be exactly 6 digits.")
+        return False
+
+    all_students_data = load_data()
+    
+    if student_code in all_students_data:
+        st.session_state.user_info = all_students_data[student_code]
+        st.success(f"Welcome back, {st.session_state.user_info['name']}!")
+    else:
+        st.session_state.user_info = {
+            'name': name,
+            'class': student_class,
+            'quiz_history': []
+        }
+        all_students_data[student_code] = st.session_state.user_info
+        save_data(all_students_data)
+        st.success("Student information saved successfully! You can now start the quiz.")
+
+    st.session_state.student_code = student_code
+    st.session_state.user_info_submitted = True
+    return True
+
+def grade_quiz_and_analyze():
+    """Grades the quiz, performs detailed analysis, and saves the result to local file."""
+    total_correct = 0
+    total_questions = len(st.session_state.selected_questions)
+    
+    chapter_scores = {ch: {'correct': 0, 'total': 0} for ch in question_bank.keys()}
+    difficulty_scores = {'Easy': {'correct': 0, 'total': 0}, 'Medium': {'correct': 0, 'total': 0}, 'Hard': {'correct': 0, 'total': 0}}
+
+    for i, q_data in enumerate(st.session_state.selected_questions):
+        chapter = q_data['chapter']
+        difficulty = q_data['difficulty']
+        student_answer = st.session_state.student_answers_current_test[i]
+        correct_answer = q_data['correct_answer']
+
+        chapter_scores[chapter]['total'] += 1
+        difficulty_scores[difficulty]['total'] += 1
+
+        if student_answer == correct_answer:
+            total_correct += 1
+            chapter_scores[chapter]['correct'] += 1
+            difficulty_scores[difficulty]['correct'] += 1
+
+    st.session_state.total_correct = total_correct
+    
+    overall_score_percentage = (total_correct / total_questions) * 100
+    st.session_state.overall_score_percentage = overall_score_percentage
+
+    # Calculate and store chapter scores for display
+    chapter_scores_data = {}
+    for chapter, scores in chapter_scores.items():
+        if scores['total'] > 0:
+            percentage = (scores['correct'] / scores['total']) * 100
+            chapter_scores_data[chapter] = percentage
+    st.session_state.chapter_scores_data = chapter_scores_data
+
+    # Save the quiz result to local file
+    all_students_data = load_data()
+    quiz_result = {
+        'score': total_correct,
+        'total_questions': total_questions,
+        'timestamp': time.time(),
+        'chapter_scores': st.session_state.chapter_scores_data,
+        'difficulty_scores': {diff: (data['correct'] / data['total']) * 100 if data['total'] > 0 else 100 for diff, data in difficulty_scores.items()}
+    }
+    
+    if 'quiz_history' not in all_students_data[st.session_state.student_code]:
+        all_students_data[st.session_state.student_code]['quiz_history'] = []
+    
+    all_students_data[st.session_state.student_code]['quiz_history'].append(quiz_result)
+    save_data(all_students_data)
+
+    # Perform AI-powered analysis for strengths and weaknesses
+    strengths = []
+    weaknesses = []
+    
+    # Analyze by Chapter
+    for chapter, percentage in chapter_scores_data.items():
+        if percentage >= 80:
+            strengths.append(f"You have a strong understanding of **{chapter.title()}** concepts.")
+        elif percentage <= 50:
+            weaknesses.append(f"You should focus more on **{chapter.title()}**.")
+
+    # Analyze by Difficulty
+    for difficulty, scores in difficulty_scores.items():
+        if scores['total'] > 0:
+            percentage = (scores['correct'] / scores['total']) * 100
+            if percentage >= 75:
+                strengths.append(f"You handle **{difficulty}** level questions very well.")
+            elif percentage <= 50:
+                weaknesses.append(f"You may need to practice more **{difficulty}** level questions.")
+    
+    return strengths, weaknesses
+
+def get_last_score(student_code):
+    """Retrieves the most recent quiz score from a local file."""
+    all_students_data = load_data()
+    if student_code in all_students_data and 'quiz_history' in all_students_data[student_code] and all_students_data[student_code]['quiz_history']:
+        all_students_data[student_code]['quiz_history'].sort(key=lambda x: x['timestamp'], reverse=True)
+        return all_students_data[student_code]['quiz_history'][0]['score']
+    return None
+
+def plot_chapter_scores():
+    st.subheader("Performance by Chapter")
+    all_students_data = load_data()
+    
+    if st.session_state.student_code in all_students_data and 'quiz_history' in all_students_data[st.session_state.student_code]:
+        quiz_history = all_students_data[st.session_state.student_code]['quiz_history']
+        
+        # Sort history by timestamp to get the latest
+        quiz_history.sort(key=lambda x: x['timestamp'])
+
+        for chapter, current_percentage in st.session_state.chapter_scores_data.items():
+            
+            # Find the best historical score for this chapter
+            best_historical_score = 0
+            for quiz in quiz_history[:-1]:  # Exclude the current quiz
+                if chapter in quiz['chapter_scores']:
+                    best_historical_score = max(best_historical_score, quiz['chapter_scores'][chapter])
+
+            st.write(f"**{chapter.title()}**")
+            
+            # Display current vs. best historical score
+            if best_historical_score > 0:
+                st.info(f"Previous best: {best_historical_score:.2f}%. Current score: {current_percentage:.2f}%")
+                col1, col2 = st.columns(2)
+                col1.metric("Current Score", f"{current_percentage:.2f}%")
+                col2.metric("Previous Best", f"{best_historical_score:.2f}%", delta=current_percentage-best_historical_score)
+            else:
+                st.info(f"Current score: {current_percentage:.2f}% (No previous attempts recorded)")
+            
+            st.progress(current_percentage / 100.0)
+            st.write("---")
+
+# --- Main Streamlit App UI ---
+st.title("Personalized Math Test")
+
+if not st.session_state.user_info_submitted:
+    with st.form("user_info_form"):
+        st.header("Student Information")
+        name = st.text_input("Your Full Name")
+        student_code = st.text_input("6-digit Student Code (e.g., 123456)", max_chars=6)
+        student_class = st.selectbox("Your Class", options=[None, 1, 2, 3, 4, 5])
+        
+        submitted = st.form_submit_button("Start Quiz")
+        if submitted:
+            if submit_user_info(name, student_code, student_class):
+                st.session_state.last_score = get_last_score(st.session_state.student_code)
+                
+                all_questions_flat = []
+                for chapter, questions in question_bank.items():
+                    for q in questions:
+                        all_questions_flat.append({"chapter": chapter, **q})
+                
+                st.session_state.selected_questions = random.sample(all_questions_flat, 10) # Now 10 questions
+                st.session_state.student_answers_current_test = [""] * len(st.session_state.selected_questions)
+                st.rerun()
+
+else:
+    if not st.session_state.quiz_submitted:
+        st.subheader(f"Welcome, {st.session_state.user_info['name']}!")
+        
+        if st.session_state.last_score is not None:
+            st.info(f"Your last score was {st.session_state.last_score} out of 10. Let's see if you can improve!")
+        
+        st.divider()
+        st.write("Please answer the 10 random questions below.")
+
+        with st.form("quiz_form"):
+            for i, q_data in enumerate(st.session_state.selected_questions):
+                st.write(f"**Question {i+1} ({q_data['chapter'].title()} - {q_data['difficulty']}):** {q_data['question']}")
+                
+                # Check if an option has been selected previously to set the default value
+                selected_index = 0
+                if st.session_state.student_answers_current_test[i] in q_data['options']:
+                    selected_index = q_data['options'].index(st.session_state.student_answers_current_test[i])
+
+                st.session_state.student_answers_current_test[i] = st.radio(
+                    f"Select your answer for Q{i+1}:",
+                    q_data['options'],
+                    key=f"random_q_{i}",
+                    index=selected_index
+                )
+            
+            submitted = st.form_submit_button("Submit Test")
+            if submitted:
+                st.session_state.strengths, st.session_state.weaknesses = grade_quiz_and_analyze()
+                st.session_state.quiz_submitted = True
+                st.rerun()
+
+    else:
+        st.subheader("Quiz Results and Analysis")
+        st.success(f"You answered {st.session_state.total_correct} out of 10 questions correctly.")
+        
+        st.progress(st.session_state.overall_score_percentage / 100.0, text=f"Overall Score: {st.session_state.overall_score_percentage:.2f}%")
+        
+        if st.session_state.last_score is not None:
+            change = st.session_state.total_correct - st.session_state.last_score
+            if change > 0:
+                st.success(f"📈 Great job! You've improved your score by {change} points since your last attempt.")
+            elif change < 0:
+                st.warning(f"📉 Your score has changed by {abs(change)} points since your last attempt. Let's focus on improvement!")
+            else:
+                st.info("You got the same score as last time. Keep practicing!")
+                
+        st.divider()
+
+        plot_chapter_scores()
+
+        st.divider()
+
+        # Display the AI-powered analysis
+        st.subheader("Your Strengths:")
+        if st.session_state.strengths:
+            for strength in st.session_state.strengths:
+                st.success(f"✔️ {strength}")
+        else:
+            st.info("You did not show any specific areas of strength in this test. Keep practicing to build confidence!")
+
+        st.subheader("Areas for Improvement:")
+        if st.session_state.weaknesses:
+            for weakness in st.session_state.weaknesses:
+                st.warning(f"⚠️ {weakness}")
+        else:
+            st.balloons()
+            st.success("Your performance was excellent across the board! Keep up the great work.")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Take Test Again"):
+                st.session_state.quiz_submitted = False
+                all_questions_flat = []
+                for chapter, questions in question_bank.items():
+                    for q in questions:
+                        all_questions_flat.append({"chapter": chapter, **q})
+                st.session_state.selected_questions = random.sample(all_questions_flat, 10)
+                st.session_state.student_answers_current_test = [""] * len(st.session_state.selected_questions)
+                st.rerun()
+
+        with col2:
+            if st.button("Take test with different student"):
+                for key in st.session_state.keys():
+                    del st.session_state[key]
+                st.rerun()
